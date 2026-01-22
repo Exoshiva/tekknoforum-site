@@ -138,8 +138,25 @@
             bottom: 20px;
             font-size: 0.7rem;
             color: var(--cyan-dim);
-            opacity: 0.7;
+            opacity: 0.8;
             z-index: 2;
+            line-height: 2; /* Abstand für 2 Zeilen */
+        }
+
+        /* Design für den E-Mail Link */
+        .mail-link {
+            color: var(--cyan-dim);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--cyan-dim);
+            transition: all 0.3s ease;
+            margin-left: 5px;
+        }
+
+        .mail-link:hover {
+            color: var(--cyan-main);
+            text-shadow: 0 0 10px var(--cyan-main);
+            border-bottom: 1px solid var(--cyan-main);
+            cursor: pointer;
         }
 
         @keyframes spin-right { 100% { transform: rotate(360deg); } }
@@ -183,7 +200,8 @@
     </div>
 
     <div class="footer">
-        EST. 2026 // ARCHITECT: LARS VEGAS // SAFER SPACE INITIATIVE
+        EST. 2026 // ARCHITECT: LARS VEGAS<br>
+        CONTACT: <a href="mailto:support@tekknoforum.space" class="mail-link">SUPPORT@TEKKNOFORUM.SPACE</a>
     </div>
 
 </body>
