@@ -16,14 +16,13 @@
 
         body {
             margin: 0;
-            /* WICHTIG: 100dvh garantiert, dass es auf Handys exakt in den sichtbaren Bereich passt */
-            height: 100dvh; 
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            overflow: hidden; /* Verhindert Scrollen komplett */
+            padding: 15px;
+            overflow-x: hidden;
             font-family: 'Courier New', Courier, monospace;
             color: var(--neon-cyan);
             background-color: var(--bg-deep);
@@ -54,23 +53,22 @@
         }
 
         /* --- 1. HEADER --- */
-        .header-container { text-align: center; margin-bottom: 20px; width: 100%; z-index: 2; }
+        .header-container { text-align: center; margin-bottom: 30px; width: 100%; z-index: 2; }
 
         h1 {
-            /* Desktop Standard */
-            font-size: 4rem; 
+            font-size: clamp(2rem, 10vw, 4rem); 
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 0;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 25px rgba(0, 243, 255, 0.6), 0 0 40px rgba(0, 243, 255, 0.4);
-            line-height: 1.0;
+            line-height: 1.1;
         }
 
         .subline {
-            margin-top: 10px;
+            margin-top: 15px;
             color: var(--text-color);
-            font-size: 1rem;
+            font-size: clamp(0.7rem, 3vw, 1rem);
             letter-spacing: 4px;
             opacity: 0.9;
             border-bottom: 2px solid var(--cyan-dim);
@@ -79,11 +77,12 @@
             box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
         }
 
-        /* --- 2. LOADER --- */
+        /* --- 2. LOADER FIX (Perfekte Ausrichtung) --- */
         .loader-wrapper {
             position: relative;
-            width: 140px; height: 140px;
-            margin: 20px auto; /* Weniger Abstand */
+            width: 150px; height: 150px;
+            margin: 40px auto;
+            /* Flexbox Zentrierung erzwingen */
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -92,7 +91,7 @@
 
         .ring-spin {
             position: absolute; 
-            top: 0; left: 0;
+            top: 0; left: 0; /* Fixiert auf Rahmen */
             width: 100%; height: 100%;
             border: 3px solid transparent;
             border-top: 5px solid var(--neon-cyan);
@@ -110,13 +109,16 @@
         }
 
         .core-circle {
+            /* Positionierung relativ zur Mitte */
             position: relative; 
-            width: 70px; height: 70px; 
+            width: 80px; height: 80px; /* Feste Größe für Stabilität */
             background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 90%);
             background-color: rgba(0, 95, 107, 0.3);
             border-radius: 50%;
             border: 1px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+            
+            /* Flexbox für Text-Zentrierung im Kreis */
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -124,33 +126,33 @@
         }
 
         .loader-text {
-            color: var(--neon-cyan); font-weight: bold; font-size: 0.9rem;
+            color: var(--neon-cyan); font-weight: bold; font-size: 1rem;
             letter-spacing: 2px; 
             text-shadow: 0 0 8px var(--neon-cyan);
-            margin: 0; padding: 0;
+            margin: 0; padding: 0; /* Reset */
         }
 
         /* --- 3. TERMINAL BOX --- */
         .terminal-box {
             width: 100%; max-width: 550px;
             border: 1px solid var(--neon-cyan);
-            padding: 15px;
+            padding: 20px;
             background: rgba(0, 5, 10, 0.7);
-            font-size: 0.85rem;
+            font-size: clamp(0.8rem, 3.5vw, 0.95rem);
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
-            margin-bottom: 50px; /* Platz für Footer */
+            margin-bottom: 70px; /* Platz für Footer */
             z-index: 2;
             position: relative;
         }
         
         .terminal-box::before {
-            content: "[ROOT]"; position: absolute; top: -10px; left: 10px;
+            content: "[TKO_SYS]"; position: absolute; top: -10px; left: 10px;
             background: var(--bg-deep); padding: 0 5px; color: var(--cyan-dim); font-size: 0.7rem;
         }
 
         .line {
             display: flex; flex-wrap: wrap; justifyContent: space-between;
-            margin-bottom: 8px; padding-bottom: 4px;
+            margin-bottom: 10px; padding-bottom: 5px;
             border-bottom: 1px dashed rgba(0, 243, 255, 0.15);
         }
 
@@ -159,61 +161,38 @@
         .pending { color: #f59e0b; font-weight: bold; text-shadow: 0 0 5px #f59e0b;}
         .blink { animation: blinker 0.8s step-end infinite; }
 
-        /* --- 4. FOOTER --- */
+        /* --- 4. FOOTER (Mit Support Link) --- */
         .footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(1, 1, 1, 0.95);
             border-top: 1px solid var(--cyan-dim);
-            padding: 10px; text-align: center; font-size: 0.7rem;
-            color: var(--cyan-dim); letter-spacing: 1px; z-index: 1000;
+            padding: 15px; text-align: center; font-size: 0.75rem;
+            color: var(--cyan-dim); letter-spacing: 1px; z-index: 1000; /* Über Scanlines */
         }
         
         .footer a { 
-            color: var(--neon-cyan);
+            color: var(--neon-cyan); /* Hellblau für Sichtbarkeit */
             text-decoration: none; 
             border-bottom: 1px dotted var(--neon-cyan);
             font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .footer a:hover {
+            box-shadow: 0 0 10px var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
         }
 
         /* ANIMATIONEN */
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } 50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 35px rgba(0, 243, 255, 0.7); } 100% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
         @keyframes blinker { 50% { opacity: 0; } }
-
-        /* --- MOBILE OPTIMIERUNG (DER FIX) --- */
-        @media (max-width: 600px) {
-            
-            /* Enger zusammenrücken */
-            body { padding: 8px; }
-
-            /* Titel verkleinern, damit er in eine Zeile/Block passt */
-            h1 { font-size: 8.5vw; margin-bottom: 5px; }
-            .subline { font-size: 0.7rem; margin-top: 5px; }
-
-            /* Loader verkleinern */
-            .loader-wrapper {
-                width: 110px; height: 110px;
-                margin: 15px auto;
-            }
-            .core-circle { width: 55px; height: 55px; }
-
-            /* Terminal kompakter machen */
-            .terminal-box {
-                font-size: 0.75rem;
-                padding: 12px;
-                margin-bottom: 45px; /* Knapp über Footer */
-            }
-            
-            /* Footer sehr kompakt */
-            .footer { padding: 8px; font-size: 0.6rem; }
-        }
-
     </style>
 </head>
 <body>
 
     <div class="header-container">
-        <h1>TEKKNOFORUM.SPACE</h1>
+        <h1>TEKKNOFORUM. SPACE</h1>
         <div class="subline">// SYSTEM INITIALIZING</div>
     </div>
 
@@ -241,7 +220,7 @@
     </div>
 
     <div class="footer">
-        2026 // ARCHITECT: L.P<br>
+        2026 // ARCHITECT: LARS VEGAS<br><br>
         <span style="opacity:0.7">NEED HELP?</span> <a href="mailto:support@tekknoforum.space">SUPPORT@TEKKNOFORUM.SPACE</a>
     </div>
 
