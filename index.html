@@ -3,164 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEKKNOFORUM // LOADING</title>
+    <title>TEKKNOFORUM // SYSTEM BOOT</title>
     <style>
         :root {
-            --bg-color: #05070a;
-            --cyan: #06b6d4;
-            --cyan-dim: #0e7490;
-            --text-gray: #6b7280;
-            --glitch-red: #ef4444;
+            --bg-deep: #010101;
+            --neon-cyan: #00f3ff; /* Aggressives Helles Cyan */
+            --cyan-dim: #005f6b;
+            --text-color: #a5f3fc;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--cyan);
-            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 20px; /* WICHTIG: Abstand zum Rand auf Handys */
+            padding: 15px;
             overflow-x: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-cyan);
+            background-color: var(--bg-deep);
+            
+            /* --- SCREEN HINTERGRUND EFFEKT --- */
+            /* 1. Subtiles Raster-Muster */
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            /* 2. Vignette (dunkle Ecken) für Röhren-Look */
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
         }
 
-        /* --- RESPONSIVE LOGO --- */
-        .glitch-wrapper {
-            position: relative;
-            margin-bottom: 50px;
-            width: 100%;
+        /* --- CRT SCANLINES OVERLAY --- */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            /* Feines Linienmuster */
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.2) 0px,
+                rgba(0, 0, 0, 0.2) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none; /* WICHTIG: Damit man trotzdem klicken kann */
+            z-index: 999; /* Liegt über allem */
         }
+
+        /* --- 1. HEADER (High Glow) --- */
+        .header-container { text-align: center; margin-bottom: 30px; width: 100%; z-index: 2; }
 
         h1 {
-            /* CLAMP: Mindestens 1.5rem, Ideal 8% der Breite, Maximal 4rem */
-            font-size: clamp(1.8rem, 8vw, 4rem); 
+            font-size: clamp(2rem, 10vw, 4rem); 
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 0;
-            position: relative;
-            text-shadow: 0 0 15px var(--cyan-dim);
-            line-height: 1.2;
+            /* Starker Neon-Glow */
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 25px rgba(0, 243, 255, 0.6), 0 0 40px rgba(0, 243, 255, 0.4);
+            line-height: 1.1;
         }
 
-        /* Subline "Under Construction" */
         .subline {
+            margin-top: 15px;
+            color: var(--text-color);
             font-size: clamp(0.7rem, 3vw, 1rem);
-            color: var(--cyan-dim);
-            letter-spacing: 2px;
-            border-top: 1px solid var(--cyan-dim);
-            border-bottom: 1px solid var(--cyan-dim);
-            padding: 5px 0;
-            margin-top: 10px;
+            letter-spacing: 4px;
+            opacity: 0.9;
+            border-bottom: 2px solid var(--cyan-dim);
             display: inline-block;
-            width: 100%;
-            max-width: 600px;
+            padding-bottom: 5px;
+            box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
         }
 
-        /* --- CIRCLE LOADER (Aus deinem Screenshot) --- */
-        .loader-ring {
-            width: 120px;
-            height: 120px;
-            border: 2px solid transparent;
-            border-top: 2px solid var(--cyan);
-            border-right: 2px solid var(--cyan-dim);
-            border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-            margin: 40px auto;
+        /* --- 2. DER "SOLID" LOADER (V4 Design) --- */
+        .loader-wrapper {
             position: relative;
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+            width: 150px; height: 150px;
+            margin: 40px auto;
+            display: flex; justifyContent: center; alignItems: center;
+            z-index: 2;
+        }
+
+        .ring-spin {
+            position: absolute; width: 100%; height: 100%;
+            border: 3px solid transparent;
+            border-top: 5px solid var(--neon-cyan);
+            border-right: 3px solid var(--cyan-dim);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+            filter: drop-shadow(0 0 8px var(--neon-cyan));
+        }
+
+        .ring-static {
+            position: absolute; width: 100%; height: 100%;
+            border: 1px solid var(--cyan-dim); border-radius: 50%; opacity: 0.4;
+        }
+
+        .core-circle {
+            position: absolute; width: 55%; height: 55%;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 90%);
+            background-color: rgba(0, 95, 107, 0.3);
+            border-radius: 50%;
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+            display: flex; justifyContent: center; alignItems: center;
+            animation: pulse 2s infinite ease-in-out;
         }
 
         .loader-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--cyan);
-            animation: pulse 2s infinite;
+            color: var(--neon-cyan); font-weight: bold; font-size: 1rem;
+            letter-spacing: 2px; z-index: 2;
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        /* --- TERMINAL OUTPUT --- */
+        /* --- 3. TERMINAL BOX (Glowing Border) --- */
         .terminal-box {
-            border: 1px solid var(--cyan-dim);
-            background: rgba(6, 182, 212, 0.05);
+            width: 100%; max-width: 550px;
+            border: 1px solid var(--neon-cyan);
             padding: 20px;
-            width: 100%;
-            max-width: 500px; /* Nicht zu breit auf Desktop */
-            text-align: left;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-bottom: 60px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            background: rgba(0, 5, 10, 0.7); /* Sehr dunkel */
+            font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
+            margin-bottom: 70px;
+            z-index: 2;
+            position: relative;
+        }
+        /* Kleiner Deko-Effekt oben links an der Box */
+        .terminal-box::before {
+            content: "[TKO_SYS]"; position: absolute; top: -10px; left: 10px;
+            background: var(--bg-deep); padding: 0 5px; color: var(--cyan-dim); font-size: 0.7rem;
         }
 
-        .cmd { color: var(--text-gray); }
-        .ok { color: var(--cyan); font-weight: bold; float: right; }
-        .pending { color: #f59e0b; font-weight: bold; float: right;}
-        .blink { animation: blinker 1s step-end infinite; }
+        .line {
+            display: flex; flex-wrap: wrap; justifyContent: space-between;
+            margin-bottom: 10px; padding-bottom: 5px;
+            border-bottom: 1px dashed rgba(0, 243, 255, 0.15);
+        }
 
-        /* --- FOOTER --- */
+        .cmd { color: var(--text-color); margin-right: 10px; }
+        .ok { color: var(--neon-cyan); font-weight: bold; text-shadow: 0 0 8px var(--neon-cyan); }
+        .pending { color: #f59e0b; font-weight: bold; text-shadow: 0 0 5px #f59e0b;}
+        .blink { animation: blinker 0.8s step-end infinite; }
+
+        /* --- 4. FOOTER --- */
         .footer {
-            position: fixed;
-            bottom: 20px;
-            width: 100%;
-            font-size: 0.7rem;
-            color: var(--cyan-dim);
-            letter-spacing: 1px;
-            padding: 0 20px;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(1, 1, 1, 0.9); /* Fast schwarz, damit man es lesen kann */
+            border-top: 1px solid var(--cyan-dim);
+            padding: 15px; text-align: center; font-size: 0.7rem;
+            color: var(--cyan-dim); letter-spacing: 1px; z-index: 10;
         }
-        
-        .footer span {
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        .highlight { color: var(--cyan); text-decoration: none; border-bottom: 1px dotted var(--cyan);}
+        .footer a { color: var(--text-color); text-decoration: none; border-bottom: 1px dotted var(--text-color); }
 
-        /* --- ANIMATIONS --- */
+        /* ANIMATIONEN */
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes pulse { 0% { transform: scale(0.97); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } 50% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 35px rgba(0, 243, 255, 0.7); } 100% { transform: scale(0.97); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
         @keyframes blinker { 50% { opacity: 0; } }
-
-        /* Mobile Adjustments */
-        @media (min-width: 600px) {
-            .footer span { display: inline; margin: 0 10px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="glitch-wrapper">
-        <h1>TEKKNOFORUM<br>.SPACE</h1> <div class="subline">// SYSTEM UNDER CONSTRUCTION</div>
+    <div class="header-container">
+        <h1>TEKKNOFORUM. SPACE</h1>
+        <div class="subline">// SYSTEM INITIALIZING</div>
     </div>
 
-    <div style="position: relative;">
-        <div class="loader-ring"></div>
-        <div class="loader-text">WAIT...</div>
+    <div class="loader-wrapper">
+        <div class="ring-static"></div>
+        <div class="ring-spin"></div>
+        <div class="core-circle">
+            <span class="loader-text">LOAD</span>
+        </div>
     </div>
 
     <div class="terminal-box">
-        <div><span class="cmd">> INITIALIZING PROTOCOL_V1...</span> <span class="">OK</span></div>
-        <div><span class="cmd">> LOADING ASSETS...</span> <span class="ok">OK</span></div>
-        <div><span class="cmd">> CONNECTING SERVER...</span> <span class="pending">PENDING</span></div>
-        <br>
-        <div><span class="cmd">> STATUS:</span> <span style="color:var(--cyan)">DEPLOYMENT IN PROGRESS<span class="blink">_</span></span></div>
+        <div class="line">
+            <span class="cmd">> BOOT SEQUENCE...</span> 
+            <span class="ok">OK</span>
+        </div>
+        <div class="line">
+            <span class="cmd">> CONNECTING MAINFRAME...</span> 
+            <span class="ok">OK</span>
+        </div>
+        <div class="line" style="border:none;">
+            <span class="cmd">> STATUS: </span>
+            <span style="color:var(--neon-cyan)">ESTABLISHING UPLINK<span class="blink">_</span></span>
+        </div>
     </div>
 
     <div class="footer">
-        <span>EST. 2026</span>
-        <span>ARCHITECT: <span style="color:white">LARS VEGAS</span></span>
-        <span>CONTACT: <a href="mailto:support@tekknoforum.space" class="highlight">SUPPORT@TEKKNOFORUM.SPACE</a></span>
+        2026 // TEKKNOFORUM LEGACY<br>
+        ARCHITECT: LARS VEGAS
     </div>
 
 </body>
