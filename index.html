@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-deep: #010101;
-            --neon-cyan: #00f3ff; /* Aggressives Helles Cyan */
+            --neon-cyan: #00f3ff;
             --cyan-dim: #005f6b;
             --text-color: #a5f3fc;
         }
@@ -28,12 +28,10 @@
             background-color: var(--bg-deep);
             
             /* --- SCREEN HINTERGRUND EFFEKT --- */
-            /* 1. Subtiles Raster-Muster */
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
             background-size: 30px 30px;
-            /* 2. Vignette (dunkle Ecken) für Röhren-Look */
             box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
         }
 
@@ -43,7 +41,6 @@
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            /* Feines Linienmuster */
             background: repeating-linear-gradient(
                 0deg,
                 rgba(0, 0, 0, 0.2) 0px,
@@ -51,11 +48,11 @@
                 transparent 1px,
                 transparent 3px
             );
-            pointer-events: none; /* WICHTIG: Damit man trotzdem klicken kann */
-            z-index: 999; /* Liegt über allem */
+            pointer-events: none;
+            z-index: 999;
         }
 
-        /* --- 1. HEADER (High Glow) --- */
+        /* --- 1. HEADER --- */
         .header-container { text-align: center; margin-bottom: 30px; width: 100%; z-index: 2; }
 
         h1 {
@@ -64,7 +61,6 @@
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 0;
-            /* Starker Neon-Glow */
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 25px rgba(0, 243, 255, 0.6), 0 0 40px rgba(0, 243, 255, 0.4);
             line-height: 1.1;
         }
@@ -81,17 +77,22 @@
             box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
         }
 
-        /* --- 2. DER "SOLID" LOADER (V4 Design) --- */
+        /* --- 2. LOADER FIX (Perfekte Ausrichtung) --- */
         .loader-wrapper {
             position: relative;
             width: 150px; height: 150px;
             margin: 40px auto;
-            display: flex; justifyContent: center; alignItems: center;
+            /* Flexbox Zentrierung erzwingen */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
             z-index: 2;
         }
 
         .ring-spin {
-            position: absolute; width: 100%; height: 100%;
+            position: absolute; 
+            top: 0; left: 0; /* Fixiert auf Rahmen */
+            width: 100%; height: 100%;
             border: 3px solid transparent;
             border-top: 5px solid var(--neon-cyan);
             border-right: 3px solid var(--cyan-dim);
@@ -101,40 +102,49 @@
         }
 
         .ring-static {
-            position: absolute; width: 100%; height: 100%;
+            position: absolute; 
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border: 1px solid var(--cyan-dim); border-radius: 50%; opacity: 0.4;
         }
 
         .core-circle {
-            position: absolute; width: 55%; height: 55%;
+            /* Positionierung relativ zur Mitte */
+            position: relative; 
+            width: 80px; height: 80px; /* Feste Größe für Stabilität */
             background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 90%);
             background-color: rgba(0, 95, 107, 0.3);
             border-radius: 50%;
             border: 1px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
-            display: flex; justifyContent: center; alignItems: center;
+            
+            /* Flexbox für Text-Zentrierung im Kreis */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
             animation: pulse 2s infinite ease-in-out;
         }
 
         .loader-text {
             color: var(--neon-cyan); font-weight: bold; font-size: 1rem;
-            letter-spacing: 2px; z-index: 2;
+            letter-spacing: 2px; 
             text-shadow: 0 0 8px var(--neon-cyan);
+            margin: 0; padding: 0; /* Reset */
         }
 
-        /* --- 3. TERMINAL BOX (Glowing Border) --- */
+        /* --- 3. TERMINAL BOX --- */
         .terminal-box {
             width: 100%; max-width: 550px;
             border: 1px solid var(--neon-cyan);
             padding: 20px;
-            background: rgba(0, 5, 10, 0.7); /* Sehr dunkel */
+            background: rgba(0, 5, 10, 0.7);
             font-size: clamp(0.8rem, 3.5vw, 0.95rem);
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
-            margin-bottom: 70px;
+            margin-bottom: 70px; /* Platz für Footer */
             z-index: 2;
             position: relative;
         }
-        /* Kleiner Deko-Effekt oben links an der Box */
+        
         .terminal-box::before {
             content: "[TKO_SYS]"; position: absolute; top: -10px; left: 10px;
             background: var(--bg-deep); padding: 0 5px; color: var(--cyan-dim); font-size: 0.7rem;
@@ -151,19 +161,31 @@
         .pending { color: #f59e0b; font-weight: bold; text-shadow: 0 0 5px #f59e0b;}
         .blink { animation: blinker 0.8s step-end infinite; }
 
-        /* --- 4. FOOTER --- */
+        /* --- 4. FOOTER (Mit Support Link) --- */
         .footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
-            background: rgba(1, 1, 1, 0.9); /* Fast schwarz, damit man es lesen kann */
+            background: rgba(1, 1, 1, 0.95);
             border-top: 1px solid var(--cyan-dim);
-            padding: 15px; text-align: center; font-size: 0.7rem;
-            color: var(--cyan-dim); letter-spacing: 1px; z-index: 10;
+            padding: 15px; text-align: center; font-size: 0.75rem;
+            color: var(--cyan-dim); letter-spacing: 1px; z-index: 1000; /* Über Scanlines */
         }
-        .footer a { color: var(--text-color); text-decoration: none; border-bottom: 1px dotted var(--text-color); }
+        
+        .footer a { 
+            color: var(--neon-cyan); /* Hellblau für Sichtbarkeit */
+            text-decoration: none; 
+            border-bottom: 1px dotted var(--neon-cyan);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .footer a:hover {
+            box-shadow: 0 0 10px var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
 
         /* ANIMATIONEN */
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { transform: scale(0.97); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } 50% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 35px rgba(0, 243, 255, 0.7); } 100% { transform: scale(0.97); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } 50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 35px rgba(0, 243, 255, 0.7); } 100% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
         @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
@@ -198,8 +220,8 @@
     </div>
 
     <div class="footer">
-        2026 // TEKKNOFORUM LEGACY<br>
-        ARCHITECT: LARS VEGAS
+        2026 // ARCHITECT: LARS VEGAS<br><br>
+        <span style="opacity:0.7">NEED HELP?</span> <a href="mailto:support@tekknoforum.space">SUPPORT@TEKKNOFORUM.SPACE</a>
     </div>
 
 </body>
