@@ -16,13 +16,14 @@
 
         body {
             margin: 0;
-            min-height: 100vh;
+            /* WICHTIG: 100dvh garantiert, dass es auf Handys exakt in den sichtbaren Bereich passt */
+            height: 100dvh; 
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 15px;
-            overflow-x: hidden;
+            padding: 10px;
+            overflow: hidden; /* Verhindert Scrollen komplett */
             font-family: 'Courier New', Courier, monospace;
             color: var(--neon-cyan);
             background-color: var(--bg-deep);
@@ -53,22 +54,23 @@
         }
 
         /* --- 1. HEADER --- */
-        .header-container { text-align: center; margin-bottom: 30px; width: 100%; z-index: 2; }
+        .header-container { text-align: center; margin-bottom: 20px; width: 100%; z-index: 2; }
 
         h1 {
-            font-size: clamp(2rem, 8vw, 4rem); 
+            /* Desktop Standard */
+            font-size: 4rem; 
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 0;
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.8), 0 0 25px rgba(0, 243, 255, 0.6), 0 0 40px rgba(0, 243, 255, 0.4);
-            line-height: 1.1;
+            line-height: 1.0;
         }
 
         .subline {
-            margin-top: 15px;
+            margin-top: 10px;
             color: var(--text-color);
-            font-size: clamp(0.7rem, 3vw, 1rem);
+            font-size: 1rem;
             letter-spacing: 4px;
             opacity: 0.9;
             border-bottom: 2px solid var(--cyan-dim);
@@ -77,12 +79,11 @@
             box-shadow: 0 2px 10px rgba(0, 243, 255, 0.2);
         }
 
-        /* --- 2. LOADER FIX (Perfekte Ausrichtung) --- */
+        /* --- 2. LOADER --- */
         .loader-wrapper {
             position: relative;
-            width: 150px; height: 150px;
-            margin: 40px auto;
-            /* Flexbox Zentrierung erzwingen */
+            width: 140px; height: 140px;
+            margin: 20px auto; /* Weniger Abstand */
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -91,7 +92,7 @@
 
         .ring-spin {
             position: absolute; 
-            top: 0; left: 0; /* Fixiert auf Rahmen */
+            top: 0; left: 0;
             width: 100%; height: 100%;
             border: 3px solid transparent;
             border-top: 5px solid var(--neon-cyan);
@@ -109,16 +110,13 @@
         }
 
         .core-circle {
-            /* Positionierung relativ zur Mitte */
             position: relative; 
-            width: 80px; height: 80px; /* Feste Größe für Stabilität */
+            width: 70px; height: 70px; 
             background: radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 90%);
             background-color: rgba(0, 95, 107, 0.3);
             border-radius: 50%;
             border: 1px solid var(--neon-cyan);
             box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
-            
-            /* Flexbox für Text-Zentrierung im Kreis */
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -126,21 +124,21 @@
         }
 
         .loader-text {
-            color: var(--neon-cyan); font-weight: bold; font-size: 1rem;
+            color: var(--neon-cyan); font-weight: bold; font-size: 0.9rem;
             letter-spacing: 2px; 
             text-shadow: 0 0 8px var(--neon-cyan);
-            margin: 0; padding: 0; /* Reset */
+            margin: 0; padding: 0;
         }
 
         /* --- 3. TERMINAL BOX --- */
         .terminal-box {
             width: 100%; max-width: 550px;
             border: 1px solid var(--neon-cyan);
-            padding: 20px;
+            padding: 15px;
             background: rgba(0, 5, 10, 0.7);
-            font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+            font-size: 0.85rem;
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.15), inset 0 0 20px rgba(0,0,0,0.8);
-            margin-bottom: 70px; /* Platz für Footer */
+            margin-bottom: 50px; /* Platz für Footer */
             z-index: 2;
             position: relative;
         }
@@ -152,7 +150,7 @@
 
         .line {
             display: flex; flex-wrap: wrap; justifyContent: space-between;
-            margin-bottom: 10px; padding-bottom: 5px;
+            margin-bottom: 8px; padding-bottom: 4px;
             border-bottom: 1px dashed rgba(0, 243, 255, 0.15);
         }
 
@@ -161,66 +159,54 @@
         .pending { color: #f59e0b; font-weight: bold; text-shadow: 0 0 5px #f59e0b;}
         .blink { animation: blinker 0.8s step-end infinite; }
 
-        /* --- 4. FOOTER (Mit Support Link) --- */
+        /* --- 4. FOOTER --- */
         .footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(1, 1, 1, 0.95);
             border-top: 1px solid var(--cyan-dim);
-            padding: 15px; text-align: center; font-size: 0.75rem;
-            color: var(--cyan-dim); letter-spacing: 1px; z-index: 1000; /* Über Scanlines */
+            padding: 10px; text-align: center; font-size: 0.7rem;
+            color: var(--cyan-dim); letter-spacing: 1px; z-index: 1000;
         }
         
         .footer a { 
-            color: var(--neon-cyan); /* Hellblau für Sichtbarkeit */
+            color: var(--neon-cyan);
             text-decoration: none; 
             border-bottom: 1px dotted var(--neon-cyan);
             font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .footer a:hover {
-            box-shadow: 0 0 10px var(--neon-cyan);
-            text-shadow: 0 0 5px var(--neon-cyan);
         }
 
         /* ANIMATIONEN */
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } 50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 35px rgba(0, 243, 255, 0.7); } 100% { transform: scale(0.95); opacity: 0.9; box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
         @keyframes blinker { 50% { opacity: 0; } }
-        /* --- MOBILE TUNING (Nur für Bildschirme kleiner 600px) --- */
+
+        /* --- MOBILE OPTIMIERUNG (DER FIX) --- */
         @media (max-width: 600px) {
             
-            /* 1. Mehr Platz an den Seiten */
-            body {
-                padding: 10px; /* Weniger Randabstand, damit Box breiter wirkt */
-            }
+            /* Enger zusammenrücken */
+            body { padding: 8px; }
 
-            /* 2. Titel etwas kleiner machen, falls er umbricht */
-            h1 {
-                font-size: 13vw; /* Macht den Titel auf Handy massiver */
-                line-height: 1.0;
-            }
-            
-            /* 3. Terminal-Schrift größer für Lesbarkeit */
-            .terminal-box {
-                font-size: 0.9rem; /* Größere Schrift im Terminal */
-                padding: 15px;      /* Etwas weniger Platzverschwendung innen */
-            }
+            /* Titel verkleinern, damit er in eine Zeile/Block passt */
+            h1 { font-size: 8.5vw; margin-bottom: 5px; }
+            .subline { font-size: 0.7rem; margin-top: 5px; }
 
-            /* 4. Loader etwas verkleinern, falls er zu wuchtig ist */
+            /* Loader verkleinern */
             .loader-wrapper {
-                width: 120px;
-                height: 120px;
-                margin: 30px auto;
+                width: 110px; height: 110px;
+                margin: 15px auto;
+            }
+            .core-circle { width: 55px; height: 55px; }
+
+            /* Terminal kompakter machen */
+            .terminal-box {
+                font-size: 0.75rem;
+                padding: 12px;
+                margin-bottom: 45px; /* Knapp über Footer */
             }
             
-            /* 5. Footer anpassen */
-            .footer {
-                padding: 10px;
-                font-size: 0.6rem; /* Kleiner, damit es nicht stört */
-            }
+            /* Footer sehr kompakt */
+            .footer { padding: 8px; font-size: 0.6rem; }
         }
-
 
     </style>
 </head>
@@ -255,7 +241,7 @@
     </div>
 
     <div class="footer">
-        2026 // ARCHITECT: L.P<br><br>
+        2026 // ARCHITECT: L.P<br>
         <span style="opacity:0.7">NEED HELP?</span> <a href="mailto:support@tekknoforum.space">SUPPORT@TEKKNOFORUM.SPACE</a>
     </div>
 
