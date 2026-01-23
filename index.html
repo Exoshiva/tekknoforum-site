@@ -8,190 +8,202 @@
         :root {
             --bg-color: #05070a;
             --cyan: #06b6d4;
-            --cyan-dim: #0e7490;
-            --text-gray: #9ca3af;
-            --glitch-red: #ef4444;
+            --cyan-glow: #00ffff;
+            --dim: #0e7490;
+            --text-gray: #6b7280;
         }
 
-        /* RESET & BASICS */
         * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #0a0e14 0%, #000000 100%); /* Leichter Gradient wie im Screen */
             color: var(--cyan);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            min-height: 100vh; /* Volle Höhe */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px; /* Sicherheitsabstand zum Rand */
-            overflow-x: hidden; /* Verhindert seitliches Scrollen */
+            padding: 20px;
+            overflow-x: hidden;
         }
 
-        /* --- 1. GLITCH HEADER (Original Design) --- */
-        .glitch-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-            width: 100%;
+        /* --- 1. HEADER (Der breite Schriftzug) --- */
+        .header-container {
             text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
         }
 
         h1 {
-            /* RESPONSIVE TRICK: Schriftgröße ist 9% der Bildschirmbreite */
-            font-size: 9vw; 
-            /* Aber nicht größer als 4rem (Desktop) */
-            max-font-size: 4rem;
-            
+            /* RESPONSIVE MAGIE: Schrift ist 8% der Bildschirmbreite, aber nie kleiner als 1.2rem */
+            font-size: clamp(1.5rem, 8vw, 3.5rem); 
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 0;
-            position: relative;
-            text-shadow: 0 0 10px var(--cyan-dim);
-            line-height: 1.1;
-            white-space: nowrap; /* Kein Umbruch erzwingen */
+            text-shadow: 0 0 10px var(--dim);
+            white-space: nowrap; /* Kein Umbruch */
         }
-        
-        /* Desktop Bremse für die Schrift */
-        @media (min-width: 800px) { h1 { font-size: 4rem; } }
 
         .subline {
-            font-size: clamp(0.7rem, 3vw, 1.2rem);
-            color: var(--cyan-dim);
-            border-bottom: 1px solid var(--cyan-dim);
-            border-top: 1px solid var(--cyan-dim);
-            padding: 5px 20px;
-            margin-top: 15px;
-            display: inline-block;
-            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            color: var(--dim);
+            font-size: clamp(0.7rem, 2.5vw, 1rem); /* Passt sich auch an */
+            letter-spacing: 3px;
         }
 
-        /* --- 2. RADAR LOADER (Wie im Screenshot) --- */
-        .radar-container {
+        /* Die Linien links und rechts vom "SYSTEM UNDER CONSTRUCTION" */
+        .subline::before, .subline::after {
+            content: "";
+            height: 1px;
+            background: var(--dim);
+            flex-grow: 1;
+            margin: 0 15px;
+            max-width: 100px;
+        }
+
+        /* --- 2. DER RADAR LOADER (Aus Screenshot 2) --- */
+        .radar-wrapper {
             position: relative;
-            width: 140px;
-            height: 140px;
-            margin: 50px 0;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto 50px auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .radar-ring {
+        /* Äußerer Ring (dünn) */
+        .ring-outer {
             position: absolute;
             width: 100%;
             height: 100%;
+            border: 1px solid var(--dim);
             border-radius: 50%;
-            border: 2px solid var(--cyan-dim);
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+            opacity: 0.5;
         }
 
-        .radar-scan {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border-top: 3px solid var(--cyan);
-            border-right: 3px solid transparent;
-            animation: scan 2s linear infinite;
-            box-shadow: 0 -5px 15px var(--cyan);
-        }
-        
-        .radar-inner {
+        /* Innerer Ring (dicker, leuchtend) */
+        .ring-inner {
             position: absolute;
             width: 70%;
             height: 70%;
-            background: radial-gradient(circle, var(--cyan-dim) 0%, transparent 70%);
+            border: 4px solid var(--dim);
+            border-top: 4px solid var(--cyan); /* Der rotierende Teil */
             border-radius: 50%;
-            opacity: 0.3;
+            animation: spin 2s linear infinite;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Der massive Kreis in der Mitte */
+        .core {
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, var(--dim) 0%, transparent 80%);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
         .loader-text {
             position: absolute;
-            font-size: 1rem;
+            z-index: 10;
             font-weight: bold;
-            color: var(--cyan);
+            font-size: 1.1rem;
             letter-spacing: 2px;
-            animation: blink 1.5s infinite;
-            z-index: 2;
+            color: var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+            background: var(--bg-color); /* Damit der Text lesbar bleibt */
+            padding: 2px 5px;
         }
 
-        /* --- 3. TERMINAL BOX (Original Look) --- */
+        /* --- 3. TERMINAL BOX (Blauer Rahmen) --- */
         .terminal-box {
             width: 100%;
-            max-width: 500px;
-            border: 1px solid var(--cyan-dim);
+            max-width: 500px; /* Nicht zu breit auf Desktop */
+            border: 1px solid var(--dim);
             padding: 20px;
-            background: rgba(5, 7, 10, 0.8);
-            text-align: left;
-            font-size: clamp(0.7rem, 2.5vw, 0.9rem); /* Schrift passt sich an */
+            background: rgba(10, 10, 15, 0.5); /* Leicht transparent */
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
             line-height: 1.8;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            margin-bottom: 60px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        .line {
+            display: flex;
+            justify-content: space-between; /* Text links, Status rechts */
+            margin-bottom: 5px;
         }
 
         .cmd { color: var(--text-gray); }
-        .ok { color: var(--cyan); float: right; font-weight: bold; }
-        .pending { color: #f59e0b; float: right; font-weight: bold; }
-        
+        .ok { color: var(--cyan); font-weight: bold; }
+        .pending { color: #f59e0b; font-weight: bold; }
+        .blink { animation: blinker 1s step-end infinite; }
+
         /* --- 4. FOOTER --- */
         .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px;
-            background: var(--bg-color);
-            font-size: 0.7rem;
-            color: var(--cyan-dim);
-            text-align: center;
+            margin-top: 50px;
+            font-size: 0.65rem;
+            color: var(--dim);
             letter-spacing: 1px;
-            border-top: 1px solid #111;
-        }
-
-        .footer span {
-            display: block;
-            margin-bottom: 5px;
+            text-align: center;
+            line-height: 1.5;
+            opacity: 0.7;
         }
         
-        @media (min-width: 600px) {
-            .footer span { display: inline; margin: 0 10px; }
-        }
+        .footer a { color: var(--dim); text-decoration: none; border-bottom: 1px dotted var(--dim); }
 
         /* ANIMATIONEN */
-        @keyframes scan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes blink { 50% { opacity: 0.5; } }
-        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 0.6; transform: scale(1.1); } 100% { opacity: 0.3; transform: scale(0.9); } }
+        @keyframes blinker { 50% { opacity: 0; } }
+
     </style>
 </head>
 <body>
 
-    <div class="glitch-wrapper">
-        <h1>TEKKNOFORUM.SPACE</h1>
+    <div class="header-container">
+        <h1>TEKKNOFORUM. SPACE</h1>
         <div class="subline">// SYSTEM UNDER CONSTRUCTION</div>
     </div>
 
-    <div class="radar-container">
-        <div class="radar-ring"></div>
-        <div class="radar-inner"></div>
-        <div class="radar-scan"></div>
+    <div class="radar-wrapper">
+        <div class="ring-outer"></div>
+        <div class="ring-inner"></div>
+        <div class="core"></div>
         <div class="loader-text">WAIT...</div>
     </div>
 
     <div class="terminal-box">
-        <div><span class="cmd">> INITIALIZING PROTOCOL_V1...</span> <span class="ok">OK</span></div>
-        <div><span class="cmd">> LOADING ASSETS...</span> <span class="ok">OK</span></div>
-        <div><span class="cmd">> ESTABLISHING SERVER...</span> <span class="pending">PENDING</span></div>
+        <div class="line">
+            <span class="cmd">> INITIALIZING PROTOCOL_V1...</span> 
+            <span class="ok">OK</span>
+        </div>
+        <div class="line">
+            <span class="cmd">> LOADING ASSETS...</span> 
+            <span class="ok">OK</span>
+        </div>
+        <div class="line">
+            <span class="cmd">> ESTABLISHING SERVER...</span> 
+            <span class="pending">PENDING</span>
+        </div>
         <br>
-        <div><span class="cmd">> STATUS:</span> <span style="color:var(--cyan)">DEPLOYMENT IN PROGRESS_</span></div>
+        <div class="line" style="justify-content: flex-start;">
+            <span class="cmd">> STATUS: </span>&nbsp;
+            <span style="color:var(--cyan)">DEPLOYMENT IN PROGRESS<span class="blink">_</span></span>
+        </div>
     </div>
 
     <div class="footer">
-        <span>EST. 2026</span>
-        <span>// ARCHITECT: <span style="color:#fff">LARS VEGAS</span></span>
-        <span>CONTACT: <a href="mailto:support@tekknoforum.space" style="color:var(--cyan-dim); text-decoration:none; border-bottom:1px dotted;">SUPPORT@TEKKNOFORUM.SPACE</a></span>
+        EST. 2026 &nbsp;//&nbsp; ARCHITECT: LARS VEGAS<br>
+        CONTACT: <a href="mailto:support@tekknoforum.space">SUPPORT@TEKKNOFORUM.SPACE</a>
     </div>
 
 </body>
