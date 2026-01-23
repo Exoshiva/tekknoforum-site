@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEKKNOFORUM // INITIALIZING</title>
+    <title>TEKKNOFORUM // LOADING</title>
     <style>
         :root {
             --bg-color: #05070a;
             --cyan: #06b6d4;
             --cyan-dim: #0e7490;
-            --text-gray: #9ca3af;
+            --text-gray: #6b7280;
             --glitch-red: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -18,153 +22,145 @@
             color: var(--cyan);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             text-align: center;
+            padding: 20px; /* WICHTIG: Abstand zum Rand auf Handys */
+            overflow-x: hidden;
         }
 
-        /* --- GLITCH LOGO --- */
+        /* --- RESPONSIVE LOGO --- */
         .glitch-wrapper {
             position: relative;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
+            width: 100%;
         }
 
         h1 {
-            font-size: 3rem;
+            /* CLAMP: Mindestens 1.5rem, Ideal 8% der Breite, Maximal 4rem */
+            font-size: clamp(1.8rem, 8vw, 4rem); 
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            position: relative;
-            text-shadow: 0 0 10px var(--cyan-dim);
+            letter-spacing: 3px;
             margin: 0;
+            position: relative;
+            text-shadow: 0 0 15px var(--cyan-dim);
+            line-height: 1.2;
         }
 
-        h1::before, h1::after {
-            content: "TEKKNOFORUM.SPACE";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-        }
-
-        h1::before {
-            left: 2px;
-            text-shadow: -1px 0 var(--glitch-red);
-            clip: rect(24px, 550px, 90px, 0);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-
-        h1::after {
-            left: -2px;
-            text-shadow: -1px 0 #00ffea;
-            clip: rect(85px, 550px, 140px, 0);
-            animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-
-        /* --- LOADING BAR --- */
-        .loader-container {
-            width: 300px;
-            border: 1px solid var(--cyan-dim);
-            padding: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
-        }
-
-        .loader-bar {
-            height: 20px;
-            background: var(--cyan);
-            width: 0%;
-            animation: loading 4s ease-in-out forwards;
-            box-shadow: 0 0 10px var(--cyan);
-        }
-
-        .status-text {
-            color: var(--text-gray);
-            font-size: 0.9rem;
+        /* Subline "Under Construction" */
+        .subline {
+            font-size: clamp(0.7rem, 3vw, 1rem);
+            color: var(--cyan-dim);
+            letter-spacing: 2px;
+            border-top: 1px solid var(--cyan-dim);
+            border-bottom: 1px solid var(--cyan-dim);
+            padding: 5px 0;
             margin-top: 10px;
+            display: inline-block;
+            width: 100%;
+            max-width: 600px;
         }
 
-        .blink {
-            animation: blinker 1s linear infinite;
+        /* --- CIRCLE LOADER (Aus deinem Screenshot) --- */
+        .loader-ring {
+            width: 120px;
+            height: 120px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--cyan);
+            border-right: 2px solid var(--cyan-dim);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin: 40px auto;
+            position: relative;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
         }
+
+        .loader-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--cyan);
+            animation: pulse 2s infinite;
+        }
+
+        /* --- TERMINAL OUTPUT --- */
+        .terminal-box {
+            border: 1px solid var(--cyan-dim);
+            background: rgba(6, 182, 212, 0.05);
+            padding: 20px;
+            width: 100%;
+            max-width: 500px; /* Nicht zu breit auf Desktop */
+            text-align: left;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 60px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .cmd { color: var(--text-gray); }
+        .ok { color: var(--cyan); font-weight: bold; float: right; }
+        .pending { color: #f59e0b; font-weight: bold; float: right;}
+        .blink { animation: blinker 1s step-end infinite; }
 
         /* --- FOOTER --- */
         .footer {
-            position: absolute;
-            bottom: 30px;
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
             font-size: 0.7rem;
             color: var(--cyan-dim);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            padding: 0 20px;
         }
+        
+        .footer span {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .highlight { color: var(--cyan); text-decoration: none; border-bottom: 1px dotted var(--cyan);}
 
         /* --- ANIMATIONS --- */
-        @keyframes loading {
-            0% { width: 0%; }
-            20% { width: 15%; }
-            50% { width: 45%; }
-            70% { width: 60%; }
-            85% { width: 85%; }
-            95% { width: 92%; }
-            100% { width: 96%; } /* Stuck at 96% intentionally */
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes blinker { 50% { opacity: 0; } }
 
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 31px, 0); }
-            20% { clip: rect(65px, 9999px, 89px, 0); }
-            40% { clip: rect(25px, 9999px, 40px, 0); }
-            60% { clip: rect(90px, 9999px, 10px, 0); }
-            80% { clip: rect(5px, 9999px, 55px, 0); }
-            100% { clip: rect(35px, 9999px, 95px, 0); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip: rect(65px, 9999px, 100px, 0); }
-            20% { clip: rect(10px, 9999px, 15px, 0); }
-            40% { clip: rect(80px, 9999px, 5px, 0); }
-            60% { clip: rect(30px, 9999px, 60px, 0); }
-            80% { clip: rect(95px, 9999px, 20px, 0); }
-            100% { clip: rect(5px, 9999px, 40px, 0); }
-        }
-
-        /* Mobile tweaks */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .loader-container { width: 80%; }
+        /* Mobile Adjustments */
+        @media (min-width: 600px) {
+            .footer span { display: inline; margin: 0 10px; }
         }
     </style>
 </head>
 <body>
 
     <div class="glitch-wrapper">
-        <h1 data-text="TEKKNOFORUM.SPACE">TEKKNOFORUM.SPACE</h1>
+        <h1>TEKKNOFORUM<br>.SPACE</h1> <div class="subline">// SYSTEM UNDER CONSTRUCTION</div>
     </div>
 
-    <div class="loader-container">
-        <div class="loader-bar"></div>
+    <div style="position: relative;">
+        <div class="loader-ring"></div>
+        <div class="loader-text">WAIT...</div>
     </div>
 
-    <div class="status-text">
-        SYSTEM DEPLOYMENT IN PROGRESS... <span class="blink">_</span>
-        <br><br>
-        <span style="color: #0e7490; font-size: 0.8rem;">
-            > CONNECTING TO TKO_ARCHIVE<br>
-            > ESTABLISHING SECURE UPLINK<br>
-            > WAITING FOR ADMIN: LARS VEGAS
-        </span>
+    <div class="terminal-box">
+        <div><span class="cmd">> INITIALIZING PROTOCOL_V1...</span> <span class="ok">OK</span></div>
+        <div><span class="cmd">> LOADING ASSETS...</span> <span class="ok">OK</span></div>
+        <div><span class="cmd">> CONNECTING SERVER...</span> <span class="pending">PENDING</span></div>
+        <br>
+        <div><span class="cmd">> STATUS:</span> <span style="color:var(--cyan)">DEPLOYMENT IN PROGRESS<span class="blink">_</span></span></div>
     </div>
 
     <div class="footer">
-        EST. 2026 // DRESDEN UNDERGROUND LEGACY
+        <span>EST. 2026</span>
+        <span>ARCHITECT: <span style="color:white">LARS VEGAS</span></span>
+        <span>CONTACT: <a href="mailto:support@tekknoforum.space" class="highlight">SUPPORT@TEKKNOFORUM.SPACE</a></span>
     </div>
 
 </body>
