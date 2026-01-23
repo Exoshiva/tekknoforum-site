@@ -3,207 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEKKNOFORUM // SYSTEM BOOT</title>
+    <title>TEKKNOFORUM // INITIALIZING</title>
     <style>
         :root {
             --bg-color: #05070a;
             --cyan: #06b6d4;
-            --cyan-glow: #00ffff;
-            --dim: #0e7490;
-            --text-gray: #6b7280;
+            --cyan-dim: #0e7490;
+            --text-gray: #9ca3af;
+            --glitch-red: #ef4444;
         }
-
-        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at center, #0a0e14 0%, #000000 100%); /* Leichter Gradient wie im Screen */
             color: var(--cyan);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
+            text-align: center;
         }
 
-        /* --- 1. HEADER (Der breite Schriftzug) --- */
-        .header-container {
-            text-align: center;
+        /* --- GLITCH LOGO --- */
+        .glitch-wrapper {
+            position: relative;
             margin-bottom: 40px;
-            width: 100%;
         }
 
         h1 {
-            /* RESPONSIVE MAGIE: Schrift ist 8% der Bildschirmbreite, aber nie kleiner als 1.2rem */
-            font-size: clamp(1.5rem, 8vw, 3.5rem); 
+            font-size: 3rem;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            text-shadow: 0 0 10px var(--dim);
-            white-space: nowrap; /* Kein Umbruch */
-        }
-
-        .subline {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            color: var(--dim);
-            font-size: clamp(0.7rem, 2.5vw, 1rem); /* Passt sich auch an */
-            letter-spacing: 3px;
-        }
-
-        /* Die Linien links und rechts vom "SYSTEM UNDER CONSTRUCTION" */
-        .subline::before, .subline::after {
-            content: "";
-            height: 1px;
-            background: var(--dim);
-            flex-grow: 1;
-            margin: 0 15px;
-            max-width: 100px;
-        }
-
-        /* --- 2. DER RADAR LOADER (Aus Screenshot 2) --- */
-        .radar-wrapper {
+            letter-spacing: 5px;
             position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 20px auto 50px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-shadow: 0 0 10px var(--cyan-dim);
+            margin: 0;
         }
 
-        /* Äußerer Ring (dünn) */
-        .ring-outer {
+        h1::before, h1::after {
+            content: "TEKKNOFORUM.SPACE";
             position: absolute;
+            left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
-            border: 1px solid var(--dim);
-            border-radius: 50%;
-            opacity: 0.5;
+            background: var(--bg-color);
         }
 
-        /* Innerer Ring (dicker, leuchtend) */
-        .ring-inner {
-            position: absolute;
-            width: 70%;
-            height: 70%;
-            border: 4px solid var(--dim);
-            border-top: 4px solid var(--cyan); /* Der rotierende Teil */
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
+        h1::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--glitch-red);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        h1::after {
+            left: -2px;
+            text-shadow: -1px 0 #00ffea;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        /* --- LOADING BAR --- */
+        .loader-container {
+            width: 300px;
+            border: 1px solid var(--cyan-dim);
+            padding: 5px;
+            margin-bottom: 20px;
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
         }
 
-        /* Der massive Kreis in der Mitte */
-        .core {
-            position: absolute;
-            width: 40%;
-            height: 40%;
-            background: radial-gradient(circle, var(--dim) 0%, transparent 80%);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .loader-bar {
+            height: 20px;
+            background: var(--cyan);
+            width: 0%;
+            animation: loading 4s ease-in-out forwards;
+            box-shadow: 0 0 10px var(--cyan);
         }
 
-        .loader-text {
-            position: absolute;
-            z-index: 10;
-            font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            color: var(--cyan);
-            text-shadow: 0 0 5px var(--cyan);
-            background: var(--bg-color); /* Damit der Text lesbar bleibt */
-            padding: 2px 5px;
+        .status-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-top: 10px;
         }
 
-        /* --- 3. TERMINAL BOX (Blauer Rahmen) --- */
-        .terminal-box {
-            width: 100%;
-            max-width: 500px; /* Nicht zu breit auf Desktop */
-            border: 1px solid var(--dim);
-            padding: 20px;
-            background: rgba(10, 10, 15, 0.5); /* Leicht transparent */
-            font-size: clamp(0.75rem, 3vw, 0.9rem);
-            line-height: 1.8;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            text-align: left;
+        .blink {
+            animation: blinker 1s linear infinite;
         }
 
-        .line {
-            display: flex;
-            justify-content: space-between; /* Text links, Status rechts */
-            margin-bottom: 5px;
-        }
-
-        .cmd { color: var(--text-gray); }
-        .ok { color: var(--cyan); font-weight: bold; }
-        .pending { color: #f59e0b; font-weight: bold; }
-        .blink { animation: blinker 1s step-end infinite; }
-
-        /* --- 4. FOOTER --- */
+        /* --- FOOTER --- */
         .footer {
-            margin-top: 50px;
-            font-size: 0.65rem;
-            color: var(--dim);
-            letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.5;
-            opacity: 0.7;
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.7rem;
+            color: var(--cyan-dim);
+            letter-spacing: 2px;
         }
-        
-        .footer a { color: var(--dim); text-decoration: none; border-bottom: 1px dotted var(--dim); }
 
-        /* ANIMATIONEN */
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 0.6; transform: scale(1.1); } 100% { opacity: 0.3; transform: scale(0.9); } }
-        @keyframes blinker { 50% { opacity: 0; } }
+        /* --- ANIMATIONS --- */
+        @keyframes loading {
+            0% { width: 0%; }
+            20% { width: 15%; }
+            50% { width: 45%; }
+            70% { width: 60%; }
+            85% { width: 85%; }
+            95% { width: 92%; }
+            100% { width: 96%; } /* Stuck at 96% intentionally */
+        }
 
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 31px, 0); }
+            20% { clip: rect(65px, 9999px, 89px, 0); }
+            40% { clip: rect(25px, 9999px, 40px, 0); }
+            60% { clip: rect(90px, 9999px, 10px, 0); }
+            80% { clip: rect(5px, 9999px, 55px, 0); }
+            100% { clip: rect(35px, 9999px, 95px, 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(10px, 9999px, 15px, 0); }
+            40% { clip: rect(80px, 9999px, 5px, 0); }
+            60% { clip: rect(30px, 9999px, 60px, 0); }
+            80% { clip: rect(95px, 9999px, 20px, 0); }
+            100% { clip: rect(5px, 9999px, 40px, 0); }
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .loader-container { width: 80%; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h1>TEKKNOFORUM. SPACE</h1>
-        <div class="subline">// SYSTEM UNDER CONSTRUCTION</div>
+    <div class="glitch-wrapper">
+        <h1 data-text="TEKKNOFORUM.SPACE">TEKKNOFORUM.SPACE</h1>
     </div>
 
-    <div class="radar-wrapper">
-        <div class="ring-outer"></div>
-        <div class="ring-inner"></div>
-        <div class="core"></div>
-        <div class="loader-text">WAIT...</div>
+    <div class="loader-container">
+        <div class="loader-bar"></div>
     </div>
 
-    <div class="terminal-box">
-        <div class="line">
-            <span class="cmd">> INITIALIZING PROTOCOL_V1...</span> 
-            <span class="ok">OK</span>
-        </div>
-        <div class="line">
-            <span class="cmd">> LOADING ASSETS...</span> 
-            <span class="ok">OK</span>
-        </div>
-        <div class="line">
-            <span class="cmd">> ESTABLISHING SERVER...</span> 
-            <span class="pending">PENDING</span>
-        </div>
-        <br>
-        <div class="line" style="justify-content: flex-start;">
-            <span class="cmd">> STATUS: </span>&nbsp;
-            <span style="color:var(--cyan)">DEPLOYMENT IN PROGRESS<span class="blink">_</span></span>
-        </div>
+    <div class="status-text">
+        SYSTEM DEPLOYMENT IN PROGRESS... <span class="blink">_</span>
+        <br><br>
+        <span style="color: #0e7490; font-size: 0.8rem;">
+            > CONNECTING TO TKO_ARCHIVE<br>
+            > ESTABLISHING SECURE UPLINK<br>
+            > WAITING FOR ADMIN: LARS VEGAS
+        </span>
     </div>
 
     <div class="footer">
-        EST. 2026 &nbsp;//&nbsp; ARCHITECT: LARS VEGAS<br>
-        CONTACT: <a href="mailto:support@tekknoforum.space">SUPPORT@TEKKNOFORUM.SPACE</a>
+        EST. 2026 // DRESDEN UNDERGROUND LEGACY
     </div>
 
 </body>
